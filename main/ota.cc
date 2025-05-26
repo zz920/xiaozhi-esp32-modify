@@ -83,7 +83,7 @@ bool Ota::CheckVersion() {
         ESP_LOGE(TAG, "Check version URL is not properly set");
         return false;
     }
-
+    ESP_LOGI(TAG, "Check version URL: %s", check_version_url_.c_str());
     auto http = SetupHttp();
 
     std::string data = board.GetJson();
@@ -144,6 +144,7 @@ bool Ota::CheckVersion() {
             }
         }
         has_mqtt_config_ = true;
+        ESP_LOGI(TAG, "MQTT config endpoint: %s", settings.GetString("endpoint").c_str());
     } else {
         ESP_LOGI(TAG, "No mqtt section found !");
     }
@@ -161,6 +162,7 @@ bool Ota::CheckVersion() {
             }
         }
         has_websocket_config_ = true;
+        ESP_LOGI(TAG, "WebSocket config url: %s", settings.GetString("url").c_str());
     } else {
         ESP_LOGI(TAG, "No websocket section found!");
     }

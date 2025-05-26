@@ -116,6 +116,11 @@ void WifiBoard::EnterWifiConfigMode() {
 
     // Wait for service to complete
     wifi_prov_mgr_wait();
+
+    // Set custom ota url
+    Settings settings("wifi", true);
+    settings.SetString("ota_url", "http://192.168.1.100:8081/ota");
+
     // Finally de-initialize the manager
     wifi_prov_mgr_deinit();
 }
@@ -172,6 +177,7 @@ Http* WifiBoard::CreateHttp() {
 WebSocket* WifiBoard::CreateWebSocket() {
     Settings settings("websocket", false);
     std::string url = settings.GetString("url");
+    ESP_LOGI(TAG, "WebSocket URL: %s", url.c_str());
     if (url.find("wss://") == 0) {
         return new WebSocket(new TlsTransport());
     } else {
